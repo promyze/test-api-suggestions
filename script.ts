@@ -1,8 +1,10 @@
 import fs from 'fs/promises';
 import axios from 'axios';
+import https from "https";
 
-const PROMYZE_URL= "TO_FILL"
-const API_KEY= "TO_FILL"
+const PROMYZE_URL= "TO_FILL";
+const API_KEY= "TO_FILL";
+const CA_SSL: string= "TO_FILL";
 
 class IO {
     async getFileContent(path: string): Promise<string> {
@@ -52,9 +54,25 @@ class HttpAPI {
     }
 
     async axiosRequest(httpConfig: any): Promise<any> {
-        const response = await axios.request(httpConfig);
-        const result = response.data[0].data.length;
-        return result;
+        if (CA_SSL && CA_SSL.length) {
+            console.log("Using SSL");
+            const ca = await fs.readFile(CA_SSL);
+            const httpsAgent = new https.Agent({
+                ca: ca,
+                rejectUnauthorized: false,
+            });
+            const axiosWithCert = axios.create({
+                httpsAgent,
+            });
+            const response = await axiosWithCert.request(httpConfig);
+            const result = response.data[0].data.length;
+            return result;
+        } else {
+            console.log("Don't import certificate");
+            const response = await axios.request(httpConfig);
+            const result = response.data[0].data.length;
+            return result;
+        }
     }
 }
 
