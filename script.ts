@@ -76,7 +76,7 @@ class HttpAPI {
     }
 }
 
-const file = "script.ts";
+const file = "code.ts";
 const extension = ".ts";
 const io: IO = new IO();
 io.getFileContent(file)
