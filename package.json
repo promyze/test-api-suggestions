@@ -2,9 +2,13 @@
   "name": "promyze-test-api-suggestions",
   "version": "1.0.0",
   "description": "A script that calls the Promyze API to get suggestions from a file content",
-  "main": "script.ts",
+  "main": "./build/script.js",
+  "bin": {
+    "promyze-cli": "./build/script.js"
+  },
   "scripts": {
-    "start": "node --loader ts-node/esm script.ts"
+    "start": "node --loader ts-node/esm script.ts",
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
